@@ -30,8 +30,8 @@ public class Engine : PCO
 
     // Set by ProcessInput()
     bool Stop_Flag = true; // Referred to from "Steer_Wheel_CS".
-    float L_Input_Rate;
-    float R_Input_Rate;
+    public float L_Input_Rate;
+    public float R_Input_Rate;
     float Turn_Brake_Rate; //Make the tank stop turnning automatacilly
 
     // Referred to from Track.
@@ -48,18 +48,20 @@ public class Engine : PCO
     //privates>>
     Rigidbody rb;
 
-    float leftSpeedRate;
-    float rightSpeedRate;
+    public float leftSpeedRate;
+    public float rightSpeedRate;
     float defaultTorque;
     float acceleRate;
     float deceleRate;
     float stoppingTime; //the time took for the tank to stop
 
+    //privates for process input
+    float vertical=0.0f;
+    float horizontal=0.0f;
+    float brakingTime = 1.0f;
     public override void ProcessInput()
     {   
-        float vertical=0.0f;
-		float horizontal=0.0f;
-		float brakingTime = 1.0f;
+        
         // Set "vertical".
         if (Input.GetKeyDown (KeyCode.W)) { // Forward
             vertical += 0.25f;
