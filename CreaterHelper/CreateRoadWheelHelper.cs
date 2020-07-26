@@ -14,7 +14,7 @@ public class CreateRoadWheelHelper:MonoBehaviour{
 		public float Sus_Anchor = 0.0f;
 		public float Sus_Mass = 30.0f;
 		public float Sus_Spring = 900.0f;
-		public float Sus_Damper = 20.0f;
+		public float Sus_Damper = 2000.0f;
 		public float Sus_Target = 30.0f;
 		public float Sus_Forward_Limit = 30.0f;
 		public float Sus_Backward_Limit = 30.0f;
