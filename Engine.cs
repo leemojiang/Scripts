@@ -71,7 +71,7 @@ public class Engine : PCO
             vertical = 0.0f;
         }
         vertical = Mathf.Clamp (vertical, -0.5f, 1.0f);
-
+    
         // Set "horizontal".
         if (Input.GetKey(KeyCode.A)) { // Left
             horizontal = -1.0f;
