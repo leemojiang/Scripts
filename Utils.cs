@@ -10,3 +10,14 @@ public enum InputAxis{
     Vertical
 
 }
+
+public enum InputButtons{
+    NULL,
+    
+    Space
+
+}
+
+public enum AxisSelect{
+    X,Y,Z
+}
