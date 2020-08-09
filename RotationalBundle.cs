@@ -23,8 +23,12 @@ public class RotationalBundle:MonoBehaviour{
 
     public Vector3 setContinousRotationSpeed;//in yaw pitch row
 
-    float curX,curY,curZ; //rotation speed
-    Vector3 targetEulerAngle;
+    [SerializeField]public float curX,curY,curZ; //current speed rate always>0 
+    [SerializeField]float targetX,targetY,targetZ;
+    [SerializeField]float dirX,dirY,dirZ; //direction for x,y,z used for deacceleration
+
+    //current rotation speed
+    [SerializeField] Vector3 targetEulerAngle;
     
     void Update(){
         continousRotation();
@@ -35,27 +39,26 @@ public class RotationalBundle:MonoBehaviour{
         transform.Rotate(setContinousRotationSpeed,Space.Self);
     }
 
+
+    //good for keyboard rotation bug bad for mouse
     void manualRotation(){
-        float targetX,targetY,targetZ;
 
         targetX= Input.GetAxis(setInputToRoll.ToString());
         targetY=Input.GetAxis(setInputToYaw.ToString());
         targetZ=Input.GetAxis(setInputToPitch.ToString());
-
-        // Debug.Log(targetX);
+        
         if (targetX!=0)
         {
             curX=Mathf.MoveTowards(curX,setMaxSpeed.x,setAcceleration.x*Time.deltaTime);
+            dirX=Mathf.Sign(targetX);
         }else{
             curX=Mathf.MoveTowards(curX,0,setDeAcceleration.x*Time.deltaTime);
+            
         }
-        Debug.Log(curX);
+        targetEulerAngle.x= Mathf.Clamp(targetEulerAngle.x+curX*dirX*Time.deltaTime, setMinRotation.x, setMaxRotation.x);
 
-        targetEulerAngle.x= Mathf.Clamp (transform.localEulerAngles.x+curX*Time.deltaTime*targetX, setMinRotation.x, setMaxSpeed.x);
 
-        transform.localEulerAngles=targetEulerAngle;
-        // InputAxis.MouseX
-        
+        transform.localEulerAngles=targetEulerAngle;        
     }
 
     [ContextMenu("Test")]
