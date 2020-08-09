@@ -23,8 +23,9 @@ public class RotationalBundle:MonoBehaviour{
 
     public Vector3 setContinousRotationSpeed;//in yaw pitch row
 
-    [SerializeField]public float curX,curY,curZ; //current speed rate always>0 
-    [SerializeField]float targetX,targetY,targetZ;
+
+    [SerializeField]float curX,curY,curZ; //current speed rate always>0 
+    [SerializeField]float inputX,inputY,inputZ;
     [SerializeField]float dirX,dirY,dirZ; //direction for x,y,z used for deacceleration
 
     //current rotation speed
@@ -40,26 +41,40 @@ public class RotationalBundle:MonoBehaviour{
     }
 
 
-    //good for keyboard rotation bug bad for mouse
     void manualRotation(){
+        //good for keyboard rotation but bad for mouse
 
-        targetX= Input.GetAxis(setInputToRoll.ToString());
-        targetY=Input.GetAxis(setInputToYaw.ToString());
-        targetZ=Input.GetAxis(setInputToPitch.ToString());
+        inputX= Input.GetAxis(setInputToRoll.ToString());
+        inputY=Input.GetAxis(setInputToYaw.ToString());
+        inputZ=Input.GetAxis(setInputToPitch.ToString());
         
-        if (targetX!=0)
+        if (inputX!=0)
         {
             curX=Mathf.MoveTowards(curX,setMaxSpeed.x,setAcceleration.x*Time.deltaTime);
-            dirX=Mathf.Sign(targetX);
+            dirX=Mathf.Sign(inputX);
         }else{
-            curX=Mathf.MoveTowards(curX,0,setDeAcceleration.x*Time.deltaTime);
-            
+            curX=Mathf.MoveTowards(curX,0,setDeAcceleration.x*Time.deltaTime);         
         }
-        targetEulerAngle.x= Mathf.Clamp(targetEulerAngle.x+curX*dirX*Time.deltaTime, setMinRotation.x, setMaxRotation.x);
 
+        targetEulerAngle.x=targetEulerAngle.x+curX*dirX*Time.deltaTime;
+        //enable full cycle
+        if (targetEulerAngle.x <=-180)
+        {
+            targetEulerAngle.x+=360;
+        }
+        if (targetEulerAngle.x >= 180)
+        {
+            targetEulerAngle.x-=360;
+        }
+
+        targetEulerAngle.x= Mathf.Clamp(targetEulerAngle.x, setMinRotation.x, setMaxRotation.x);
 
         transform.localEulerAngles=targetEulerAngle;        
     }
+
+    
+
+
 
     [ContextMenu("Test")]
     void Test(){
