@@ -31,10 +31,10 @@ public class SingleFireComp:MonoBehaviour{
     }
 
     void processFire(){
-        if (Input.GetMouseButtonDown())
-        {
+        // if (Input.GetMouseButtonDown())
+        // {
             
-        }
+        // }
     }
 
 
