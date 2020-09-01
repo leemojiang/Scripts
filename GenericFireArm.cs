@@ -18,8 +18,9 @@ public class GenericFireArm:MonoBehaviour{
     // [Header("Single Fire Comp")]
     // public SingleFireComp fireComp;
 
+    //two rotation bundle 
     void Start(){
         // fireComp=GetComponent<SingleFireComp>();
     }
-    
+
 }

@@ -6,7 +6,6 @@ using UnityEngine;
 /// <summary>
 /// 
 /// </summary>
-[RequireComponent(typeof(Camera))]
 public class FreeCamera : MonoBehaviour
 {
     [Range(0,5)]
@@ -20,40 +19,68 @@ public class FreeCamera : MonoBehaviour
     public float rotSpeed=32.0f;
     public Transform target;
 
-    public Vector3 pos;
+    public Vector3 targetPos;
     private Quaternion rot,targetRot;
-
+    
     public InputAxis X;
     public InputAxis Y;
-    void Start(){
-        pos= target.position;
-        transform.rotation=Quaternion.identity;
 
+
+    void Start(){
+        if(target!=null) targetPos= target.position;
+        
+        transform.rotation=Quaternion.identity;
     }
 
     void Update(){
         ProcessInput();
 
-
         //update rot
         rot = Quaternion.Slerp(rot,targetRot,Time.deltaTime*rotDamp);
         transform.rotation=rot;
-
         // transform.rotation = Quaternion.Slerp(transform.rotation,targetRot,Time.deltaTime*rotDamp);
-
-        //update position
-        transform.position= pos -rot* new Vector3(0,0,distance);
-
+        
+        //updatetargetPosition
+        transform.position=targetPos -rot* new Vector3(0,0,distance);
+        
     }
 
     void ProcessInput(){
         float dx= Input.GetAxis(X.ToString());
         float dy= Input.GetAxis(Y.ToString());
         
-        dx*=rotSpeed;
-        dy*=rotSpeed;
-        if (Input.GetMouseButton(1))
+        #region  process KeyCode
+        if (Input.GetKey(KeyCode.W))
         {
+            targetPos += transform.forward * speed;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            targetPos -= transform.forward * speed;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            targetPos += transform.right * speed;
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            targetPos -= transform.right * speed;
+        }
+        if (Input.GetKey(KeyCode.R))
+        {
+            targetPos += Vector3.up * speed;
+        }
+        if (Input.GetKey(KeyCode.F))
+        {
+            targetPos -= Vector3.up * speed;
+        }
+        #endregion
+
+        if (Input.GetMouseButton(1))
+        {   
+            dx*=rotSpeed;
+            dy*=rotSpeed;
+
             Vector3 angles= transform.rotation.eulerAngles;
 
             angles.x=Mathf.Repeat(angles.x+180f,360f)-180f;
@@ -61,13 +88,21 @@ public class FreeCamera : MonoBehaviour
             angles.x+=-dy;//这里方向也需要反一下
             angles.z=0;
             targetRot.eulerAngles= angles;
+
+            //updates
             // transform.rotation=rot;
 
-            // //update position
-            // transform.position= pos -rot* new Vector3(0,0,distance);
+            // //updatetargetPosition
+            // transform.targetition= targetPos -rot* new Vector3(0,0,distance);
 
-            //update position method 2
-            // transform.position = pos - transform.forward * distance;
+            //updatetargetPosition method 2
+            // transform.position =targetPos - transform.forward * distance;
         }
+
+        // //zoom
+        // float zoom= Input.GetAxis("Mouse ScrollWheel");
+        // if (zoom!=0){
+            
+        // }
     }
 }

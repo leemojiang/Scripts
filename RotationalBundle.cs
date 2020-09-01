@@ -138,7 +138,19 @@ public class RotationalBundle:MonoBehaviour{
         transform.localRotation=Quaternion.Slerp(transform.localRotation,rot,Time.deltaTime);
     }
 
+    public void aimingAroundY_UP(Vector3 targetPos){
+        //transform to locoal 
+        targetPos=transform.worldToLocalMatrix * targetPos;
+        float tarAngleXZ = Vector2.Angle(new Vector2 (0, 1),
+        new Vector2(targetPos.x,targetPos.z));
 
+        if (tarAngleXZ> setMinRotation.y && tarAngleXZ < setMaxRotation.y) //rotate around which axis
+        {   
+            targetPos.y=0;
+            Quaternion tarQ=Quaternion.FromToRotation(new Vector3(0,0,1),targetPos);
+            transform.localRotation = Quaternion.RotateTowards(transform.localRotation,tarQ,setMaxSpeed.y * Time.deltaTime);
+        }    
+    }
 
     [ContextMenu("Test")]
     void Test(){
