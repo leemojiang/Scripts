@@ -152,15 +152,20 @@ public class RotationalBundle:MonoBehaviour{
         float tarAngleXZ = Vector2.Angle(new Vector2 (0, 1),
         new Vector2(targetPos.x,targetPos.z));
 
-        debugAngle=tarAngleXZ;
-        debugpos=targetPos;
+      
+        targetPos.y=0;
+        Quaternion deltaQ=Quaternion.FromToRotation(new Vector3(0,0,1),targetPos);
+        // Quaternion deltaQ=Quaternion.LookRotation(targetPos,new Vector3(0,1,0)); //same effect
 
-        if (tarAngleXZ> setMinRotation.y && tarAngleXZ < setMaxRotation.y) //rotate around which axis
+       
+        Quaternion tarQ=transform.localRotation * deltaQ;
+
+        Vector3 eulerAngle= tarQ.eulerAngles;
+        if (eulerAngle.y >= 180)eulerAngle.y-=360;
+        if (eulerAngle.y <= -180)eulerAngle.y+=360;
+        
+        if (eulerAngle.y> setMinRotation.y && eulerAngle.y < setMaxRotation.y) //rotate around which axis
         {   
-            targetPos.y=0;
-            Quaternion tarQ=Quaternion.FromToRotation(new Vector3(0,0,1),targetPos);
-            debugpos2 = transform.InverseTransformVector(transform.forward).normalized;
-            tarQ=tarQ * transform.localRotation;
             transform.localRotation = Quaternion.RotateTowards(transform.localRotation,tarQ,setMaxSpeed.y * Time.deltaTime);
         }    
     }
