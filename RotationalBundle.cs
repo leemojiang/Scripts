@@ -44,7 +44,7 @@ public class RotationalBundle:MonoBehaviour{
 
 
         //test auto rotation
-        aimingAroundY_UP(model.position);
+        aimingAroundY_UP2(model.position);
         Debug.DrawRay(transform.position,transform.forward);
     }
 
@@ -144,20 +144,17 @@ public class RotationalBundle:MonoBehaviour{
         transform.localRotation=Quaternion.Slerp(transform.localRotation,rot,Time.deltaTime);
     }
 
-    public Vector3 debugpos,debugpos2;
-    public float debugAngle;
+    // public Vector3 debugpos,debugpos2;
+    // public float debugAngle;
     public void aimingAroundY_UP(Vector3 targetPos){
         //transform to locoal 
         targetPos=transform.worldToLocalMatrix.MultiplyPoint(targetPos);
-        float tarAngleXZ = Vector2.Angle(new Vector2 (0, 1),
+        float deltaAngleXZ = Vector2.Angle(new Vector2 (0, 1),
         new Vector2(targetPos.x,targetPos.z));
-
-      
+ 
         targetPos.y=0;
         Quaternion deltaQ=Quaternion.FromToRotation(new Vector3(0,0,1),targetPos);
-        // Quaternion deltaQ=Quaternion.LookRotation(targetPos,new Vector3(0,1,0)); //same effect
-
-       
+        // Quaternion deltaQ=Quaternion.LookRotation(targetPos,new Vector3(0,1,0)); //same effect   
         Quaternion tarQ=transform.localRotation * deltaQ;
 
         Vector3 eulerAngle= tarQ.eulerAngles;
@@ -165,6 +162,26 @@ public class RotationalBundle:MonoBehaviour{
         if (eulerAngle.y <= -180)eulerAngle.y+=360;
         
         if (eulerAngle.y> setMinRotation.y && eulerAngle.y < setMaxRotation.y) //rotate around which axis
+        {   
+            transform.localRotation = Quaternion.RotateTowards(transform.localRotation,tarQ,setMaxSpeed.y * Time.deltaTime);
+        }    
+    }
+
+    public void aimingAroundY_UP2(Vector3 targetPos){
+        
+        targetPos= targetPos-transform.position;
+        float tarAngleXZ = Vector2.Angle(new Vector2 (0, 1),
+        new Vector2(targetPos.x,targetPos.z));
+ 
+        targetPos.y=0;
+        Quaternion tarQ=Quaternion.FromToRotation(new Vector3(0,0,1),targetPos);
+        // Quaternion deltaQ=Quaternion.LookRotation(targetPos,new Vector3(0,1,0)); //same effect   
+        
+        // Vector3 eulerAngle= tarQ.eulerAngles;
+        if (tarAngleXZ >= 180)tarAngleXZ-=360;
+        if (tarAngleXZ <= -180)tarAngleXZ+=360;
+        
+        if (tarAngleXZ> setMinRotation.y && tarAngleXZ < setMaxRotation.y) //rotate around which axis
         {   
             transform.localRotation = Quaternion.RotateTowards(transform.localRotation,tarQ,setMaxSpeed.y * Time.deltaTime);
         }    
