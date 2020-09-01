@@ -24,12 +24,12 @@ public class RotationalBundle:MonoBehaviour{
     public Vector3 setContinousRotationSpeed;//in yaw pitch row
 
 
-    [SerializeField]float curX,curY,curZ; //current speed rate always>0 
-    [SerializeField]float inputX,inputY,inputZ;
-    [SerializeField]float dirX,dirY,dirZ; //direction for x,y,z used for deacceleration
+    float curX,curY,curZ; //current speed rate always>0 
+    float inputX,inputY,inputZ;
+    float dirX,dirY,dirZ; //direction for x,y,z used for deacceleration
 
     //current rotation speed
-    [SerializeField] Vector3 targetEulerAngle; //every frame updated once //indicate where the rotation should be in one frame constrained by the acc and maxspeed
+    Vector3 targetEulerAngle; //every frame updated once //indicate where the rotation should be in one frame constrained by the acc and maxspeed
 
     
     void Start(){
@@ -37,9 +37,15 @@ public class RotationalBundle:MonoBehaviour{
         targetEulerAngle=transform.localEulerAngles;
     }
 
+    public Transform model;
     void Update(){
         continousRotation();
-        manualRotation2();
+        // manualRotation2();
+
+
+        //test auto rotation
+        aimingAroundY_UP(model.position);
+        Debug.DrawRay(transform.position,transform.forward);
     }
 
     void continousRotation(){
@@ -138,16 +144,23 @@ public class RotationalBundle:MonoBehaviour{
         transform.localRotation=Quaternion.Slerp(transform.localRotation,rot,Time.deltaTime);
     }
 
+    public Vector3 debugpos,debugpos2;
+    public float debugAngle;
     public void aimingAroundY_UP(Vector3 targetPos){
         //transform to locoal 
-        targetPos=transform.worldToLocalMatrix * targetPos;
+        targetPos=transform.worldToLocalMatrix.MultiplyPoint(targetPos);
         float tarAngleXZ = Vector2.Angle(new Vector2 (0, 1),
         new Vector2(targetPos.x,targetPos.z));
+
+        debugAngle=tarAngleXZ;
+        debugpos=targetPos;
 
         if (tarAngleXZ> setMinRotation.y && tarAngleXZ < setMaxRotation.y) //rotate around which axis
         {   
             targetPos.y=0;
             Quaternion tarQ=Quaternion.FromToRotation(new Vector3(0,0,1),targetPos);
+            debugpos2 = transform.InverseTransformVector(transform.forward).normalized;
+            tarQ=tarQ * transform.localRotation;
             transform.localRotation = Quaternion.RotateTowards(transform.localRotation,tarQ,setMaxSpeed.y * Time.deltaTime);
         }    
     }
