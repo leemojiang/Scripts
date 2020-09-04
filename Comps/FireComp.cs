@@ -8,8 +8,9 @@ using System;
 [Serializable]
 public abstract class FireComp:MonoBehaviour{
     public GenericFireArm gfa;
-
+    public bool isAI=false;
     public abstract void fire( );
+    
     
 }
 
@@ -31,41 +32,53 @@ public class SingleFireComp : FireComp
     }
 
     void Update(){
-        fire();
+        if (Input.GetMouseButtonDown((int)fireInput))
+        { 
+            fire();
+        }
     }
 
 
     public override void fire( )
     {
-        if (Input.GetMouseButtonDown((int)fireInput))
-        {   
-            //not exceed max rpm
-            if(Time.time-lastFireTime>minFireDeltaTime){
+        //not exceed max rpm
+        if(Time.time-lastFireTime>minFireDeltaTime){
 
-                //not overheat
-                if (gfa.currentHeat>gfa.overheatPenalty){
-                    gfa.overHeat();
-                    return;
-                }
-
-                //have ammo
-                //?????
-
-                //fire
-                genProjectile();
-                gfa.currentHeat+=gfa.heatAddWhenFire;
-                lastFireTime=Time.time;
+            //not overheat
+            if (gfa.currentHeat>gfa.overheatPenalty){
+                gfa.overHeat();
+                return;
             }
+
+            //have ammo
+            //Unimplemented
+
+            //fire
+            genProjectile();
+            gfa.currentHeat+=gfa.heatAddWhenFire;
+            lastFireTime=Time.time;
         }
     }
 
     
     void genProjectile(){
         GenericProjectile pro = Instantiate(gfa.projectileTemplate,projectileStartPosition.position,projectileStartPosition.rotation);
-        Debug.Log(projectileStartPosition.rotation);
-        Debug.Log(projectileStartPosition.localRotation);
+        // Debug.Log(projectileStartPosition.rotation);
+        // Debug.Log(projectileStartPosition.localRotation);
         Rigidbody rb= pro.GetComponent<Rigidbody>();
+
+        if(isAI){
+
+                
+            return;
+        }
+
+        //humanpart
+        //set vecolicity
         rb.velocity= projectileStartPosition.forward * gfa.velocity;
+
+        //deviation
+        //not Unimplemented
     }
 }
 

@@ -21,7 +21,7 @@ public enum InputButtons{
 
 public enum InputMouseButtons{
     
-    Left,
+    Left=0,
     Right,
     Middle
 
