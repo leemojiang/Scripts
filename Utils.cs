@@ -30,3 +30,8 @@ public enum InputMouseButtons{
 public enum AxisSelect{
     X,Y,Z
 }
+
+public enum WeaponType{
+    indirect,
+    direct
+}
