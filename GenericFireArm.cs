@@ -33,7 +33,8 @@ public class GenericFireArm:MonoBehaviour{
 
 
     void Update(){
-        currentHeat-=coolDownPerSec/Time.deltaTime;
+        if(currentHeat >0) currentHeat-=coolDownPerSec/Time.deltaTime;
+        
     }
 
     public void overHeat(){
