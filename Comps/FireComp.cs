@@ -16,15 +16,18 @@ public abstract class FireComp:MonoBehaviour{
 [Serializable]
 public class SingleFireComp : FireComp
 {   
-    public Vector3 projectileStartPosition;
+    public Transform projectileStartPosition;
     public InputMouseButtons fireInput;
-    public int roundsPerMinute;
+    public int roundsPerMinute=100;
     float lastFireTime=0;
     float minFireDeltaTime; //in second
 
     void Start(){
         gfa=GetComponent<GenericFireArm>();
         minFireDeltaTime=60/roundsPerMinute;
+
+        //in case forget to set it!
+        if(projectileStartPosition==null) projectileStartPosition=GetComponentsInChildren<Transform>()[0];
     }
 
     void Update(){
@@ -34,7 +37,7 @@ public class SingleFireComp : FireComp
 
     public override void fire( )
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown((int)fireInput))
         {   
             //not exceed max rpm
             if(Time.time-lastFireTime>minFireDeltaTime){
@@ -44,19 +47,25 @@ public class SingleFireComp : FireComp
                     gfa.overHeat();
                     return;
                 }
+
+                //have ammo
+                //?????
+
                 //fire
                 genProjectile();
                 gfa.currentHeat+=gfa.heatAddWhenFire;
-
+                lastFireTime=Time.time;
             }
         }
     }
 
     
     void genProjectile(){
-        GenericProjectile pro = Instantiate(gfa.projectileTemplate);
+        GenericProjectile pro = Instantiate(gfa.projectileTemplate,projectileStartPosition.position,projectileStartPosition.rotation);
+        Debug.Log(projectileStartPosition.rotation);
+        Debug.Log(projectileStartPosition.localRotation);
         Rigidbody rb= pro.GetComponent<Rigidbody>();
-        rb.velocity= new Vector3(0,0,gfa.velocity) ;
+        rb.velocity= projectileStartPosition.forward * gfa.velocity;
     }
 }
 
