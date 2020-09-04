@@ -23,4 +23,11 @@ public class GenericFireArm:MonoBehaviour{
         // fireComp=GetComponent<SingleFireComp>();
     }
 
+    public void aimingTarget(){
+
+    }
+
+    void initRotationalBundles(){
+        
+    }
 }

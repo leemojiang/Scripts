@@ -38,14 +38,20 @@ public class RotationalBundle:MonoBehaviour{
     }
 
     public Transform model;
+
+    public Vector3 loc_eulerAngle_de,eulerAngle_de;
     void Update(){
         continousRotation();
         // manualRotation2();
 
+        
 
         //test auto rotation
-        aimingAroundY_UP2(model.position);
+        aimingAroundY_UP(model.position);
         Debug.DrawRay(transform.position,transform.forward);
+
+        loc_eulerAngle_de=transform.localEulerAngles;
+        eulerAngle_de=transform.eulerAngles;
     }
 
     void continousRotation(){
@@ -146,6 +152,9 @@ public class RotationalBundle:MonoBehaviour{
 
     // public Vector3 debugpos,debugpos2;
     // public float debugAngle;
+    ///<summary>
+    ///Bug remain for rotation
+    ///<summary>
     public void aimingAroundY_UP(Vector3 targetPos){
         //transform to locoal 
         targetPos=transform.worldToLocalMatrix.MultiplyPoint(targetPos);
@@ -167,6 +176,9 @@ public class RotationalBundle:MonoBehaviour{
         }    
     }
 
+    ///<summary>
+    ///Bug remain for rotation
+    ///<summary>
     public void aimingAroundY_UP2(Vector3 targetPos){
         
         targetPos= targetPos-transform.position;
@@ -186,6 +198,15 @@ public class RotationalBundle:MonoBehaviour{
             transform.localRotation = Quaternion.RotateTowards(transform.localRotation,tarQ,setMaxSpeed.y * Time.deltaTime);
         }    
     }
+
+    ///<summary>
+    ///For vertical rotation
+    ///rotate the gun
+    ///<summary>
+    public void aimingAroundX_right(Vector3 targetPos){
+            
+    }
+
 
     [ContextMenu("Test")]
     void Test(){
