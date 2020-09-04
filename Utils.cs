@@ -18,6 +18,15 @@ public enum InputButtons{
 
 }
 
+
+public enum InputMouseButtons{
+    
+    Left,
+    Right,
+    Middle
+
+}
+
 public enum AxisSelect{
     X,Y,Z
 }
