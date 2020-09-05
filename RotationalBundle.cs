@@ -9,8 +9,8 @@ public class RotationalBundle:MonoBehaviour{
     public Vector3 setAcceleration;//in x,y,z yaw pitch row
     public Vector3 setDeAcceleration; //in yaw pitch row
     public Vector3 setMaxSpeed; //rad/s
-    public Vector3 setMaxRotation;
-    public Vector3 setMinRotation;
+    public Vector3 setMaxRotation; // in local eulerangles
+    public Vector3 setMinRotation; // in local eulerangles
 
     public Vector2 regulatePitch=new Vector2(1,1); // multipler fot the axis
     public Vector2 regulateRoll=new Vector2(1,1);
@@ -47,7 +47,7 @@ public class RotationalBundle:MonoBehaviour{
         
 
         //test auto rotation
-        aimingAroundY_UP(model.position);
+        // aimingAroundY_UP(model.position);
         Debug.DrawRay(transform.position,transform.forward);
 
         loc_eulerAngle_de=transform.localEulerAngles;
@@ -166,14 +166,49 @@ public class RotationalBundle:MonoBehaviour{
         // Quaternion deltaQ=Quaternion.LookRotation(targetPos,new Vector3(0,1,0)); //same effect   
         Quaternion tarQ=transform.localRotation * deltaQ;
 
-        Vector3 eulerAngle= tarQ.eulerAngles;
+        Quaternion lastQ= transform.localRotation;
+
+        //set to the transform to get the local eulerAngles
+        transform.localRotation = tarQ;
+
+        Vector3 eulerAngle= transform.localEulerAngles;
         if (eulerAngle.y >= 180)eulerAngle.y-=360;
         if (eulerAngle.y <= -180)eulerAngle.y+=360;
         
         if (eulerAngle.y> setMinRotation.y && eulerAngle.y < setMaxRotation.y) //rotate around which axis
         {   
-            transform.localRotation = Quaternion.RotateTowards(transform.localRotation,tarQ,setMaxSpeed.y * Time.deltaTime);
+            transform.localRotation = Quaternion.RotateTowards(lastQ,tarQ,setMaxSpeed.y * Time.deltaTime);
         }    
+    }
+
+    ///<summary>
+    ///For vertical rotation
+    ///rotate the gun
+    ///<summary>
+    public void aimingAroundX_Right(Vector3 targetPos){
+        targetPos=transform.worldToLocalMatrix.MultiplyPoint(targetPos);
+        float deltaAngleYZ = Vector2.Angle(new Vector2 (0, 1),
+        new Vector2(targetPos.y,targetPos.z));
+ 
+        targetPos.x=0;
+        Quaternion deltaQ=Quaternion.FromToRotation(new Vector3(0,0,1),targetPos);
+        // Quaternion deltaQ=Quaternion.LookRotation(targetPos,new Vector3(0,1,0)); //same effect   
+        Quaternion tarQ=transform.localRotation * deltaQ;
+        
+        Quaternion lastQ= transform.localRotation;
+        //set to the transform to get the local eulerAngles
+        transform.localRotation = tarQ;
+
+        Vector3 eulerAngle= transform.localEulerAngles;
+        if (eulerAngle.x >= 180)eulerAngle.x-=360;
+        if (eulerAngle.x <= -180)eulerAngle.x+=360;
+        
+        
+
+        if (eulerAngle.x> setMinRotation.x && eulerAngle.x < setMaxRotation.x) //rotate around which axis
+        {   
+            transform.localRotation = Quaternion.RotateTowards(lastQ,tarQ,setMaxSpeed.x * Time.deltaTime);
+        }
     }
 
     ///<summary>
@@ -199,13 +234,7 @@ public class RotationalBundle:MonoBehaviour{
         }    
     }
 
-    ///<summary>
-    ///For vertical rotation
-    ///rotate the gun
-    ///<summary>
-    public void aimingAroundX_right(Vector3 targetPos){
-            
-    }
+    
 
 
     [ContextMenu("Test")]

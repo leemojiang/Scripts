@@ -32,7 +32,7 @@ public class SingleFireComp : FireComp
     }
 
     void Update(){
-        if (Input.GetMouseButtonDown((int)fireInput))
+        if (Input.GetMouseButtonDown((int)fireInput) && !isAI)
         { 
             fire();
         }

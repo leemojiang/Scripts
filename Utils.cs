@@ -32,6 +32,7 @@ public enum AxisSelect{
 }
 
 public enum WeaponType{
-    indirect,
-    direct
+    Indirect,
+    Direct,
+    CloseCombat
 }
