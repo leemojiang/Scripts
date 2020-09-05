@@ -172,6 +172,7 @@ public class RotationalBundle:MonoBehaviour{
         transform.localRotation = tarQ;
 
         Vector3 eulerAngle= transform.localEulerAngles;
+        transform.localRotation=lastQ;
         if (eulerAngle.y >= 180)eulerAngle.y-=360;
         if (eulerAngle.y <= -180)eulerAngle.y+=360;
         
@@ -200,6 +201,8 @@ public class RotationalBundle:MonoBehaviour{
         transform.localRotation = tarQ;
 
         Vector3 eulerAngle= transform.localEulerAngles;
+        
+        transform.localRotation=lastQ;
         if (eulerAngle.x >= 180)eulerAngle.x-=360;
         if (eulerAngle.x <= -180)eulerAngle.x+=360;
         

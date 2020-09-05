@@ -18,8 +18,8 @@ public class GenericFireArm:MonoBehaviour{
 
     
     public FireComp fire;
-    RotationalBundle turrent;
-    RotationalBundle gunBase;
+    public RotationalBundle turrent;
+    public RotationalBundle gunBase;
     void Start(){
 
 
@@ -30,9 +30,7 @@ public class GenericFireArm:MonoBehaviour{
         
         fire.gfa=this;
 
-        turrent=this.GetComponentInParent<RotationalBundle>();
-        gunBase=turrent.GetComponentInParent<RotationalBundle>();
-        Debug.Assert(turrent && gunBase);
+        initRotationalBundles();
     }
 
 
@@ -50,9 +48,15 @@ public class GenericFireArm:MonoBehaviour{
     public void aimingTarget(Transform target){
         turrent.aimingAroundY_UP(target.position);
         gunBase.aimingAroundX_Right(target.position);
+
+        Debug.DrawLine(transform.position,target.transform.position,Color.red);
+
+        Debug.DrawRay(transform.position,transform.forward*10,Color.blue);
     }
 
     void initRotationalBundles(){
-
+        gunBase=this.transform.parent.GetComponent<RotationalBundle>();
+        turrent=gunBase.transform.parent.GetComponent<RotationalBundle>();
+        Debug.Assert(turrent && gunBase);
     }
 }
