@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControlInfo:AITemplatePlugIn{
+// public class ControlInfo:AITemplatePlugIn{
 
     
-}
+// }

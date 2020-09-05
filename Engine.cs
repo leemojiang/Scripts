@@ -56,30 +56,33 @@ public class Engine : PCO
     float stoppingTime; //the time took for the tank to stop
 
     //privates for process input
-    float vertical=0.0f;
-    float horizontal=0.0f;
+    public float vertical=0.0f;
+    public float horizontal=0.0f;
     float brakingTime = 1.0f;
     public override void ProcessInput()
     {   
+        if(!isAI){
+            // Set "vertical".
+            if (Input.GetKeyDown (KeyCode.W)) { // Forward
+                vertical += 0.25f;
+            } else if (Input.GetKeyDown (KeyCode.S)) { // Backward
+                vertical -= 0.25f;
+            } else if (Input.GetKey (KeyCode.Space)) { // Stop
+                vertical = 0.0f;
+            }
+            vertical = Mathf.Clamp (vertical, -0.5f, 1.0f);
         
-        // Set "vertical".
-        if (Input.GetKeyDown (KeyCode.W)) { // Forward
-            vertical += 0.25f;
-        } else if (Input.GetKeyDown (KeyCode.S)) { // Backward
-            vertical -= 0.25f;
-        } else if (Input.GetKey (KeyCode.Space)) { // Stop
-            vertical = 0.0f;
+            // Set "horizontal".
+            if (Input.GetKey(KeyCode.A)) { // Left
+                horizontal = -1.0f;
+            } else if (Input.GetKey(KeyCode.D)) { // Right
+                horizontal = 1.0f;
+            } else { // No turn.
+                horizontal = 0.0f;
+            }
         }
-        vertical = Mathf.Clamp (vertical, -0.5f, 1.0f);
-    
-        // Set "horizontal".
-        if (Input.GetKey(KeyCode.A)) { // Left
-            horizontal = -1.0f;
-        } else if (Input.GetKey(KeyCode.D)) { // Right
-            horizontal = 1.0f;
-        } else { // No turn.
-            horizontal = 0.0f;
-        }
+
+        //else AI will set the verticle and horizantal
 
         //Set flags
         if (vertical == 0.0f && horizontal == 0.0f) { // The tank should stop.
@@ -125,8 +128,6 @@ public class Engine : PCO
         Turn_Brake_Rate = Mathf.Clamp (Turn_Brake_Rate, -1.0f, 1.0f);
 
     }
-
-   
 
     
     // Start is called before the first frame update
