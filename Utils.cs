@@ -42,3 +42,6 @@ public enum MovingType{
     Math,
     Hybird
 }
+
+
+
