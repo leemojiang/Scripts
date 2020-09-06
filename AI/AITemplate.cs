@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,6 +16,8 @@ public class AITemplate:MonoBehaviour{
     //from ControlInfo
     public float throttleScale=0.5f;
 
+
+    public MovingType movingType;
     //from Mobile
     public float turnRadius=3;
     public float maxSpeed=10;
@@ -52,6 +52,8 @@ public class AITemplate:MonoBehaviour{
 
     public float debug_angle,debug_v,debug_h;
     public Vector3 vf,vd;
+
+    bool resetNavFlag=false;
     public void Update(){
 
         
@@ -67,7 +69,43 @@ public class AITemplate:MonoBehaviour{
 
         navAgent.SetDestination(debug_Target.position);
         
-        mathControlMoving();
+        switch (movingType)
+        {
+            case MovingType.Math:
+                mathControlMoving();
+                break; 
+
+            case MovingType.Hybird:
+                engingControlMoving();
+                if(Vector3.Distance(transform.position,debug_Target.position)<targetDeviationDistance){
+                    engine.vertical=0;
+                    engine.horizontal=0;
+
+                }
+
+                break;
+            default:
+                
+                //get to target
+                if(Vector3.Distance(transform.position,debug_Target.position)<targetDeviationDistance){
+                    engine.horizontal=0;
+                    engine.vertical=0;
+                    
+                    if(!resetNavFlag)
+                    {
+                        navAgent.Warp(transform.position);
+                        resetNavFlag=true;
+                    }else{
+                        mathControlMoving();
+                    }
+
+                }
+                else{
+                    engingControlMoving();
+                } 
+                break;
+        }
+        
         
     }
 
@@ -114,11 +152,11 @@ public class AITemplate:MonoBehaviour{
             engine.vertical= Mathf.Sign(isForward) * 0.5f;
         }
 
-        //get to target
         if(Vector3.Distance(transform.position,debug_Target.position)<targetDeviationDistance){
-            engine.vertical=0;
-            engine.horizontal=0;
+                    engine.vertical=0;
+                    engine.horizontal=0;
         }
+        
 
         debug_v = engine.vertical;
         debug_h= engine.horizontal;

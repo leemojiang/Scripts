@@ -36,3 +36,9 @@ public enum WeaponType{
     Direct,
     CloseCombat
 }
+
+public enum MovingType{
+    Physic,
+    Math,
+    Hybird
+}
