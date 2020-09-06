@@ -9,12 +9,12 @@ public class AITemplate:MonoBehaviour{
     public Transform debug_Target;
 
     [Header("NavAgent  Settings")]
-    public float maxDeviateAngle =5.0f; 
+    public float maxDeviationAngle =5.0f; 
     //less than this angle will keep forward 
     //no need to turn
     public float minTurnInPlaceAngle=45.0f;
     public float resetNavAgentDisgance=3.0f;
-
+    public float targetDeviationDistance=3.0f;
     //from ControlInfo
     public float throttleScale=0.5f;
 
@@ -64,7 +64,18 @@ public class AITemplate:MonoBehaviour{
         //nav agent controll
         //target is null
         if(!debug_Target) return;
+
+        navAgent.SetDestination(debug_Target.position);
         
+        mathControlMoving();
+        
+    }
+
+    void engingControlMoving(){
+        //nav agent controll
+        //target is null
+        if(!debug_Target) return;
+
         navAgent.SetDestination(debug_Target.position);
         
         Vector3 closestTargetOnPath = navAgent.steeringTarget; 
@@ -79,34 +90,53 @@ public class AITemplate:MonoBehaviour{
         vf.y=0;
         vd.y=0;
 
-        float curDeviateAngle = Vector3.Angle(vf,vd);
+        float curDeviationAngle = Vector3.Angle(vf,vd);
 		Vector3 localVelocity = transform.InverseTransformDirection (navAgent.desiredVelocity);
         
-        debug_angle=curDeviateAngle;
+        debug_angle=curDeviationAngle;
         float isForward = localVelocity.z;
-
-        if(curDeviateAngle > minTurnInPlaceAngle ){ //get away too far from the direction
-            engine.horizontal =  Mathf.Sign(curDeviateAngle);
+        float isRight= Mathf.Sign(localVelocity.x); 
+        if(curDeviationAngle > minTurnInPlaceAngle ){ //get away too far from the direction
+            engine.horizontal =  isRight;
             engine.vertical=0;
 
             debug_v = engine.vertical;
             debug_h= engine.horizontal;
             return;
         }
-        if( curDeviateAngle > maxDeviateAngle ){ //get away too far from the direction
+        if( curDeviationAngle > maxDeviationAngle ){ //get away too far from the direction
             // engine.horizontal =  localVelocity.x;
-            engine.horizontal =  Mathf.Sign(curDeviateAngle);
-            engine.vertical= Mathf.Sign(isForward) * 0.5f; //in constant speed
+            engine.horizontal =  isRight;
+            engine.vertical= Mathf.Sign(isForward) * 0.25f; //in constant speed
             
         }else{
-            engine.vertical= Mathf.Sign(isForward) * 0.8f;
+            engine.horizontal = 0;
+            engine.vertical= Mathf.Sign(isForward) * 0.5f;
         }
+
+        //get to target
+        if(Vector3.Distance(transform.position,debug_Target.position)<targetDeviationDistance){
+            engine.vertical=0;
+            engine.horizontal=0;
+        }
+
         debug_v = engine.vertical;
         debug_h= engine.horizontal;
-        
     }
 
-    
+    void mathControlMoving(){
+        //nav agent controll
+        //target is null
+        if(!debug_Target) return;
+
+        navAgent.SetDestination(debug_Target.position);
+
+        Vector3 pos = navAgent.transform.position;
+        pos.y=transform.position.y;
+
+        transform.position= pos;
+        transform.rotation= navAgent.transform.rotation;
+    }    
 
 
     
