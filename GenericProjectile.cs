@@ -5,6 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class GenericProjectile:MonoBehaviour{
     
-    
+    // public float velocity;
 
 }

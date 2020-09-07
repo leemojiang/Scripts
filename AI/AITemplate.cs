@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class AITemplate:MonoBehaviour{
 
-    public Transform debug_Target;
+    public Transform curTarget;
 
     [Header("NavAgent  Settings")]
     public float maxDeviationAngle =5.0f; 
@@ -56,18 +56,19 @@ public class AITemplate:MonoBehaviour{
     bool resetNavFlag=false;
     public void Update(){
 
+        //target is null
+        if(!curTarget) return;
         
-        
+        //begin moving
         //reset navagent if too far
         if(Vector3.Distance(navAgent.transform.position,this.transform.position)> resetNavAgentDisgance){
             navAgent.Warp(transform.position);
         }
 
         //nav agent controll
-        //target is null
-        if(!debug_Target) return;
+       
 
-        navAgent.SetDestination(debug_Target.position);
+        navAgent.SetDestination(curTarget.position);
         
         switch (movingType)
         {
@@ -77,7 +78,7 @@ public class AITemplate:MonoBehaviour{
 
             case MovingType.Hybird:
                 engingControlMoving();
-                if(Vector3.Distance(transform.position,debug_Target.position)<targetDeviationDistance){
+                if(Vector3.Distance(transform.position,curTarget.position)<targetDeviationDistance){
                     engine.vertical=0;
                     engine.horizontal=0;
 
@@ -87,7 +88,7 @@ public class AITemplate:MonoBehaviour{
             default:
                 
                 //get to target
-                if(Vector3.Distance(transform.position,debug_Target.position)<targetDeviationDistance){
+                if(Vector3.Distance(transform.position,curTarget.position)<targetDeviationDistance){
                     engine.horizontal=0;
                     engine.vertical=0;
                     
@@ -110,11 +111,6 @@ public class AITemplate:MonoBehaviour{
     }
 
     void engingControlMoving(){
-        //nav agent controll
-        //target is null
-        if(!debug_Target) return;
-
-        navAgent.SetDestination(debug_Target.position);
         
         Vector3 closestTargetOnPath = navAgent.steeringTarget; 
 
@@ -152,7 +148,7 @@ public class AITemplate:MonoBehaviour{
             engine.vertical= Mathf.Sign(isForward) * 0.5f;
         }
 
-        if(Vector3.Distance(transform.position,debug_Target.position)<targetDeviationDistance){
+        if(Vector3.Distance(transform.position,curTarget.position)<targetDeviationDistance){
                     engine.vertical=0;
                     engine.horizontal=0;
         }
@@ -163,11 +159,6 @@ public class AITemplate:MonoBehaviour{
     }
 
     void mathControlMoving(){
-        //nav agent controll
-        //target is null
-        if(!debug_Target) return;
-
-        navAgent.SetDestination(debug_Target.position);
 
         Vector3 pos = navAgent.transform.position;
         pos.y=transform.position.y;
