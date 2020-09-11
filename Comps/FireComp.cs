@@ -23,19 +23,25 @@ public class SingleFireComp : FireComp
     float lastFireTime=0;
     float minFireDeltaTime; //in second
 
+    public int fireMode =1;
+    int curFireRemain;
     void Start(){
         gfa=GetComponent<GenericFireArm>();
         minFireDeltaTime=60/roundsPerMinute;
 
         //in case forget to set it!
         if(projectileStartPosition==null) projectileStartPosition=GetComponentsInChildren<Transform>()[0];
+
+        curFireRemain=fireMode;
     }
 
     void Update(){
-        if (Input.GetMouseButtonDown((int)fireInput) && !isAI)
+        if (Input.GetMouseButton((int)fireInput) && !isAI)
         {   
-            if (!(gfa.isReloading || Mathf.Abs(gfa.ammo.curBulletsInWeapon) < 1) )
+            if (!(gfa.isReloading || Mathf.Abs(gfa.ammo.curBulletsInWeapon) < 1) && curFireRemain!=0 )
             fire();
+        }else{
+            curFireRemain=fireMode;
         }
     }
 
@@ -59,6 +65,9 @@ public class SingleFireComp : FireComp
 
             //fire
             gfa.ammo.curBulletsInWeapon--; //decrease one ammo
+
+            curFireRemain--;
+
             genProjectile();
             gfa.currentHeat+=gfa.heatAddWhenFire;
             lastFireTime=Time.time; 
@@ -74,7 +83,7 @@ public class SingleFireComp : FireComp
         GenericProjectile pro = Instantiate(gfa.projectileTemplate,projectileStartPosition.position,projectileStartPosition.rotation);
         // Debug.Log(projectileStartPosition.rotation);
         // Debug.Log(projectileStartPosition.localRotation);
-        Rigidbody rb= pro.GetComponent<Rigidbody>();
+        // Rigidbody rb= pro.GetComponent<Rigidbody>();
 
         if(isAI){
 
@@ -84,7 +93,7 @@ public class SingleFireComp : FireComp
 
         //humanpart
         //set vecolicity
-        rb.velocity= projectileStartPosition.forward * gfa.velocity;
+        pro.velocity= projectileStartPosition.forward * gfa.velocity;
 
         //deviation
         //not Unimplemented

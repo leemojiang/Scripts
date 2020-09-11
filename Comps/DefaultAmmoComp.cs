@@ -30,6 +30,8 @@ public class DefaultAmmoComp: MonoBehaviour{
         if(reloadAmount < 1){
             reloadAmount= magSize;
         }
+
+        waitTime=new WaitForSeconds(reloadTime);
     }
 
     void Update(){
@@ -42,13 +44,15 @@ public class DefaultAmmoComp: MonoBehaviour{
             StartCoroutine(reload());
         }
     }
-
+    WaitForSeconds waitTime;
     public IEnumerator reload(){
         //no ammo remain 
-        if( Mathf.Abs(curNrOfMags) <= 0 ) yield break;
+        // if( Mathf.Abs(curNrOfMags) <= 0 ) yield break;
+        //already checked outside 
+        Debug.Assert(Mathf.Abs(curNrOfMags) > 0);
 
         gfa.isReloading=true;
-        yield return new WaitForSeconds(reloadTime);
+        yield return waitTime;
 
         if (curBulletsInWeapon + reloadAmount <= magSize) //can't have one more in the gun
         {
