@@ -61,7 +61,11 @@ public class SingleFireComp : FireComp
             gfa.ammo.curBulletsInWeapon--; //decrease one ammo
             genProjectile();
             gfa.currentHeat+=gfa.heatAddWhenFire;
-            lastFireTime=Time.time;
+            lastFireTime=Time.time; 
+        }
+
+        if(gfa.ammo.curBulletsInWeapon ==0 && gfa.ammo.autoReload && !gfa.isReloading &&  Mathf.Abs(gfa.ammo.curNrOfMags) > 0){
+            StartCoroutine(gfa.ammo.reload());
         }
     }
 

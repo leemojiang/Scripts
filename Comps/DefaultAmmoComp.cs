@@ -33,17 +33,19 @@ public class DefaultAmmoComp: MonoBehaviour{
     }
 
     void Update(){
-        if (curBulletsInWeapon == 0){
-            if ((autoReload || Input.GetKeyDown(KeyCode.R))&& (!gfa.isReloading) &&  Mathf.Abs(curNrOfMags) > 0){
-                StartCoroutine(reload());
-            }
-        } 
+        // if (curBulletsInWeapon == 0){
+        //     if ((autoReload || Input.GetKeyDown(KeyCode.R))&& (!gfa.isReloading) &&  Mathf.Abs(curNrOfMags) > 0){
+                
+        //     }
+        // } 
+        if ((Input.GetKeyDown(KeyCode.R))&& (!gfa.isReloading) &&  Mathf.Abs(curNrOfMags) > 0){
+            StartCoroutine(reload());
+        }
     }
 
-
-    IEnumerator reload(){
+    public IEnumerator reload(){
         //no ammo remain 
-        if( Mathf.Abs(curNrOfMags) <= 0) yield break;
+        if( Mathf.Abs(curNrOfMags) <= 0 ) yield break;
 
         gfa.isReloading=true;
         yield return new WaitForSeconds(reloadTime);
