@@ -17,9 +17,13 @@ public class GenericFireArm:MonoBehaviour{
     public float velocity;
 
     
-    public FireComp fire;
+    public FireComp fire = null;
+    public DefaultAmmoComp ammo = null;
     public RotationalBundle turrent;
     public RotationalBundle gunBase;
+    public bool isReloading=false; 
+
+
     void Start(){
 
 

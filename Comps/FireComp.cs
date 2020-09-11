@@ -33,7 +33,8 @@ public class SingleFireComp : FireComp
 
     void Update(){
         if (Input.GetMouseButtonDown((int)fireInput) && !isAI)
-        { 
+        {   
+            if (!(gfa.isReloading || Mathf.Abs(gfa.ammo.curBulletsInWeapon) < 1) )
             fire();
         }
     }
@@ -41,9 +42,12 @@ public class SingleFireComp : FireComp
 
     public override void fire( )
     {
+        if (gfa.isReloading || Mathf.Abs(gfa.ammo.curBulletsInWeapon) < 1) return;
+        
+
         //not exceed max rpm
         if(Time.time-lastFireTime>minFireDeltaTime){
-
+            
             //not overheat
             if (gfa.currentHeat>gfa.overheatPenalty){
                 gfa.overHeat();
@@ -54,6 +58,7 @@ public class SingleFireComp : FireComp
             //Unimplemented
 
             //fire
+            gfa.ammo.curBulletsInWeapon--; //decrease one ammo
             genProjectile();
             gfa.currentHeat+=gfa.heatAddWhenFire;
             lastFireTime=Time.time;
