@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
+[RequireComponent(typeof(GenericFireArm))]
 public class DefaultAmmoComp: MonoBehaviour{
     public GenericFireArm gfa;
     
@@ -22,6 +22,7 @@ public class DefaultAmmoComp: MonoBehaviour{
 
     void Start(){
         gfa=GetComponent<GenericFireArm>();
+        gfa.ammo=this;
         //init with a full mag
         curBulletsInWeapon = magSize;
         remianBullets = magSize * nrOfMags;
@@ -59,5 +60,6 @@ public class DefaultAmmoComp: MonoBehaviour{
             }
         }
         curNrOfMags--;
+        gfa.isReloading=false;
     }
 }
