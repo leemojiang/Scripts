@@ -29,7 +29,6 @@ public class GenericFireArm:MonoBehaviour{
         if (fire==null) fire = gameObject.AddComponent<SingleFireComp>();
         
         fire.gfa=this;
-
         initRotationalBundles();
     }
 
