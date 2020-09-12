@@ -12,7 +12,14 @@ public class ColliderTemplate:MonoBehaviour{
     public CollisionMaterial material;
     public int collisionGroup; //layer mask
 
+    public GameObject root;
+    
+    void Start(){
 
+        //the closeted CollisionManager should be the CollisionManager for the obj
+        root= GetComponentInParent<CollisionManager>().transform.gameObject; //
+        // transform.root;
+    }
 }
 
 
