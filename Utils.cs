@@ -43,4 +43,25 @@ public enum MovingType{
     Hybird
 }
 
+public enum ColliderFunctionType{
+    Armor,
+    FlueTank,
+    Ammo,
+    Engine,
+    Track,
+    Gun,
+    Turrent
+}
 
+
+public enum ColliderType{
+    BoxCollider,
+    MeshCollider
+    
+}
+
+public enum CollisionMaterial{
+    Iron,
+    Wood,
+    Glass
+}
