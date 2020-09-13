@@ -172,19 +172,28 @@ public class RotationalBundle:MonoBehaviour{
         transform.localRotation = tarQ;
 
         Vector3 eulerAngle= transform.localEulerAngles;
+
+        if(eulerAngle!=tarQ.eulerAngles){
+            Debug.Log(eulerAngle);
+            Debug.Log(tarQ.eulerAngles);
+        }
         transform.localRotation=lastQ;
         if (eulerAngle.y >= 180)eulerAngle.y-=360;
         if (eulerAngle.y <= -180)eulerAngle.y+=360;
         
-        if (eulerAngle.y <= setMinRotation.y ) //rotate around which axis
-        { 
-            eulerAngle.y=  setMinRotation.y;
-        } 
-        else if(eulerAngle.y >= setMaxRotation.y)
-        {
-            eulerAngle.y=  setMaxRotation.y;
-        }  
-        tarQ=Quaternion.Euler(eulerAngle);
+        // if (eulerAngle.y <= setMinRotation.y ) //rotate around which axis
+        // { 
+        //     eulerAngle.y=  setMinRotation.y;
+        // } 
+        // else if(eulerAngle.y >= setMaxRotation.y)
+        // {
+        //     eulerAngle.y=  setMaxRotation.y;
+        // }  
+        eulerAngle.y=Mathf.Clamp(eulerAngle.y,setMinRotation.y,setMaxRotation.y);
+        eulerAngle.x=0;
+        eulerAngle.z=0;
+        tarQ=  Quaternion.Euler(eulerAngle);
+
         transform.localRotation = Quaternion.RotateTowards(lastQ,tarQ,setMaxSpeed.y * Time.deltaTime);
 
     }
@@ -193,6 +202,8 @@ public class RotationalBundle:MonoBehaviour{
     ///For vertical rotation
     ///rotate the gun
     ///<summary>
+    
+    public Vector3 Debug1,Debug2,Debug3;
     public void aimingAroundX_Right(Vector3 targetPos){
         targetPos=transform.worldToLocalMatrix.MultiplyPoint(targetPos);
         float deltaAngleYZ = Vector2.Angle(new Vector2 (0, 1),
@@ -208,7 +219,12 @@ public class RotationalBundle:MonoBehaviour{
         transform.localRotation = tarQ;
 
         Vector3 eulerAngle= transform.localEulerAngles;
-        
+        // Debug.Assert(eulerAngle==tarQ.eulerAngles);
+        if(eulerAngle!=tarQ.eulerAngles){
+            Debug.Log(eulerAngle);
+            Debug.Log(tarQ.eulerAngles);
+        }
+        Debug1=eulerAngle;
         transform.localRotation=lastQ;
         if (eulerAngle.x >= 180)eulerAngle.x-=360;
         if (eulerAngle.x <= -180)eulerAngle.x+=360;
@@ -219,15 +235,12 @@ public class RotationalBundle:MonoBehaviour{
         // {   
         //     transform.localRotation = Quaternion.RotateTowards(lastQ,tarQ,setMaxSpeed.x * Time.deltaTime);
         // }
-        if (eulerAngle.x <= setMinRotation.x ) //rotate around which axis
-        { 
-            eulerAngle.x=  setMinRotation.x;
-        } 
-        else if(eulerAngle.x >= setMaxRotation.x)
-        {
-            eulerAngle.x=  setMaxRotation.x;
-        } 
-        tarQ=Quaternion.Euler(eulerAngle);
+        eulerAngle.x=Mathf.Clamp(eulerAngle.x,setMinRotation.x,setMaxRotation.x);
+        Debug2=eulerAngle;
+        //reset this is necessary as it only rotates around X
+        eulerAngle.y=0;
+        eulerAngle.z=0;
+        tarQ=  Quaternion.Euler(eulerAngle);
         transform.localRotation = Quaternion.RotateTowards(lastQ,tarQ,setMaxSpeed.x * Time.deltaTime);
 
     }
