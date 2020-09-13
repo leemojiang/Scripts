@@ -53,7 +53,6 @@ public class GenericFireArm:MonoBehaviour{
         gunBase.aimingAroundX_Right(target.position);
 
         Debug.DrawLine(transform.position,target.transform.position,Color.red);
-
         Debug.DrawRay(transform.position,transform.forward*10,Color.blue);
     }
 

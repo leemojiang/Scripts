@@ -176,10 +176,17 @@ public class RotationalBundle:MonoBehaviour{
         if (eulerAngle.y >= 180)eulerAngle.y-=360;
         if (eulerAngle.y <= -180)eulerAngle.y+=360;
         
-        if (eulerAngle.y> setMinRotation.y && eulerAngle.y < setMaxRotation.y) //rotate around which axis
-        {   
-            transform.localRotation = Quaternion.RotateTowards(lastQ,tarQ,setMaxSpeed.y * Time.deltaTime);
-        }    
+        if (eulerAngle.y <= setMinRotation.y ) //rotate around which axis
+        { 
+            eulerAngle.y=  setMinRotation.y;
+        } 
+        else if(eulerAngle.y >= setMaxRotation.y)
+        {
+            eulerAngle.y=  setMaxRotation.y;
+        }  
+        tarQ=Quaternion.Euler(eulerAngle);
+        transform.localRotation = Quaternion.RotateTowards(lastQ,tarQ,setMaxSpeed.y * Time.deltaTime);
+
     }
 
     ///<summary>
@@ -208,10 +215,21 @@ public class RotationalBundle:MonoBehaviour{
         
         
 
-        if (eulerAngle.x> setMinRotation.x && eulerAngle.x < setMaxRotation.x) //rotate around which axis
-        {   
-            transform.localRotation = Quaternion.RotateTowards(lastQ,tarQ,setMaxSpeed.x * Time.deltaTime);
-        }
+        // if (eulerAngle.x> setMinRotation.x && eulerAngle.x < setMaxRotation.x) //rotate around which axis
+        // {   
+        //     transform.localRotation = Quaternion.RotateTowards(lastQ,tarQ,setMaxSpeed.x * Time.deltaTime);
+        // }
+        if (eulerAngle.x <= setMinRotation.x ) //rotate around which axis
+        { 
+            eulerAngle.x=  setMinRotation.x;
+        } 
+        else if(eulerAngle.x >= setMaxRotation.x)
+        {
+            eulerAngle.x=  setMaxRotation.x;
+        } 
+        tarQ=Quaternion.Euler(eulerAngle);
+        transform.localRotation = Quaternion.RotateTowards(lastQ,tarQ,setMaxSpeed.x * Time.deltaTime);
+
     }
 
     ///<summary>
