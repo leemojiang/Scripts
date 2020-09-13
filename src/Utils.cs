@@ -65,3 +65,11 @@ public enum CollisionMaterial{
     Wood,
     Glass
 }
+
+
+namespace Test
+{
+    public class PCO{
+        public float abf;
+    }
+}

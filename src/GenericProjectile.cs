@@ -34,6 +34,8 @@ public class GenericProjectile:MonoBehaviour{
         Destroy(this.gameObject,timeToLive);
 
         curDist=0;
+
+        // GameObject.FindGameObjectsWithTag
     }
 
     Ray ray = new Ray (); //cache the ray

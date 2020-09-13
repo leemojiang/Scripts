@@ -1,3 +1,10 @@
 import UnityEngine
+import UnityEditor
+import 
 
-print dir(UnityEngine.Object.GetComponent())
+obj = UnityEngine.GameObject.FindGameObjectsWithTag("Player")
+
+comps = obj[0].GetComponents(UnityEngine.Component)
+
+for comp in comps:
+    print comp.GetType()

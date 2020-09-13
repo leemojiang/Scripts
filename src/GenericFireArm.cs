@@ -44,7 +44,7 @@ public class GenericFireArm:MonoBehaviour{
     }
 
     public void overHeat(){
-
+       
     }
 
 
