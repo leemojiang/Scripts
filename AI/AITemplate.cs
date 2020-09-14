@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class AITemplate:MonoBehaviour{
 
     public bool isAIControl=false;
+    public PlayerControlObject playerControlObject;
     public Transform curTarget;
 
     [Header("NavAgent  Settings")]

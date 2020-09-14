@@ -12,9 +12,12 @@ public class AIAgent:MonoBehaviour
     public WeaponTemplate[] weapons;
     public AISenseTemplate sense;
 
+    public PlayerControlObject playerControlObject;
     void Start(){
         at=GetComponent<AITemplate>();
-        weapons = GetComponentsInChildren<WeaponTemplate>();
+        
+        // weapons=GetComponentsInChildren<WeaponTemplate>();
+        getSelfWeapons();
     }
 
     AIBehaviour debugBehaviour = new DebugBehaviour();
@@ -28,5 +31,17 @@ public class AIAgent:MonoBehaviour
         {
             weapons[i].isAIControl=flag;
         }
+    }
+
+    public void getSelfWeapons(){
+        List<WeaponTemplate> wl = new List<WeaponTemplate>();
+
+        for (int i = 0; i < playerControlObject.PCOs.Length; i++)
+        {   
+            WeaponTemplate ls;
+            if(playerControlObject.PCOs[i].TryGetComponent<WeaponTemplate>(out ls)) wl.Add(ls);
+        }
+
+        weapons= wl.ToArray();
     }
 }

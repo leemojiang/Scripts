@@ -74,11 +74,13 @@ public class PlayerControlObject:MonoBehaviour{
 
     public PCO[] PCOs;
     // public PlayerControlObject[] PlayerControlObjs;
-    void Start(){
+    void OnEnable(){
         
         if(!TryGetComponent<AIAgent>(out agent)) agent= gameObject.AddComponent<AIAgent>();
         TryGetComponent<AITemplate>(out aiTemplate);
-
+        agent.playerControlObject=this;
+        aiTemplate.playerControlObject=this;
+        
         //top most PCO
         if(hasMobilePhysics){
             if(!TryGetComponent<Rigidbody>(out rb)) rb=gameObject.AddComponent<Rigidbody>();
@@ -88,7 +90,6 @@ public class PlayerControlObject:MonoBehaviour{
         
         PCOs= GetComponentsInChildren<PCO>(); //will get all PCO's including 
         // PlayerControlObjs=GetComponentsInChildren<PlayerControlObject>();
-
         getSelfPCOs();
     }
 
