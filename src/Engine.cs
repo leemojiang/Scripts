@@ -61,7 +61,7 @@ public class Engine : PCO
     float brakingTime = 1.0f;
     public override void ProcessInput()
     {   
-        if(!isAI){
+        if(!isAI & isPlayer){
             // Set "vertical".
             if (Input.GetKeyDown (KeyCode.W)) { // Forward
                 vertical += 0.25f;
@@ -137,7 +137,7 @@ public class Engine : PCO
     }
 
     void init(){
-        rb=GetComponent<Rigidbody>();
+        rb=transform.root.GetComponent<Rigidbody>();
 
         defaultTorque = Torque;
         if (Acceleration_Flag) {

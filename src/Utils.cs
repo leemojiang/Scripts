@@ -66,6 +66,9 @@ public enum CollisionMaterial{
     Glass
 }
 
+public enum VehicleType{
+    Tank
+}
 
 namespace Test
 {

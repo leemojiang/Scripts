@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(GenericFireArm))]
 public class WeaponTemplate:MonoBehaviour{
+    public bool isAIControl=false;
 
     public float minRange=0.0f;
     public float maxRange =999;
@@ -21,13 +22,13 @@ public class WeaponTemplate:MonoBehaviour{
     GenericFireArm gfa;
     void Start(){
         gfa=GetComponent<GenericFireArm>();
-        optimalRangePercentage *= 0.01f;
-
-        if(gfa.fire)gfa.fire.isAI=true;
-        
+        optimalRangePercentage *= 0.01f;     
     }
 
     void Update(){
+
+        if(!isAIControl)return;
+
         //Fire at any time that is allowed
         Vector3 dir=(target.position-transform.position);
         bool flag= dir.magnitude <= minRange && dir.magnitude >=maxRange;

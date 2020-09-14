@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 
-public class RotationalBundle:MonoBehaviour{
+public class RotationalBundle:PCO{
     public Vector3 setAcceleration;//in x,y,z yaw pitch row
     public Vector3 setDeAcceleration; //in yaw pitch row
     public Vector3 setMaxSpeed; //rad/s
@@ -41,6 +41,7 @@ public class RotationalBundle:MonoBehaviour{
 
     public Vector3 loc_eulerAngle_de,eulerAngle_de;
     void Update(){
+
         continousRotation();
         // manualRotation2();
 
@@ -52,6 +53,14 @@ public class RotationalBundle:MonoBehaviour{
 
         loc_eulerAngle_de=transform.localEulerAngles;
         eulerAngle_de=transform.eulerAngles;
+
+        if(isAI || !isPlayer) return;
+        
+    }
+
+    public override void ProcessInput()
+    {
+        
     }
 
     void continousRotation(){

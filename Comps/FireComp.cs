@@ -6,11 +6,9 @@ using System;
 
 [RequireComponent(typeof(GenericFireArm))]
 [Serializable]
-public abstract class FireComp:MonoBehaviour{
+public abstract class FireComp:PCO{
     public GenericFireArm gfa;
-    public bool isAI=false;
     public abstract void fire( );
-    
     
 }
 
@@ -36,7 +34,7 @@ public class SingleFireComp : FireComp
     }
 
     void Update(){
-        if (Input.GetMouseButton((int)fireInput) && !isAI)
+        if (Input.GetMouseButton((int)fireInput) && !isAI && isPlayer)
         {   
             if (!(gfa.isReloading || Mathf.Abs(gfa.ammo.curBulletsInWeapon) < 1) && curFireRemain!=0 )
             fire();

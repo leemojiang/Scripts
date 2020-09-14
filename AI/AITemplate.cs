@@ -4,6 +4,7 @@ using UnityEngine.AI;
 
 public class AITemplate:MonoBehaviour{
 
+    public bool isAIControl=false;
     public Transform curTarget;
 
     [Header("NavAgent  Settings")]
@@ -40,14 +41,14 @@ public class AITemplate:MonoBehaviour{
 		navAgent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
 
         rb=GetComponent<Rigidbody>();
-        engine=GetComponent<Engine>();
+        engine=GetComponentInChildren<Engine>();
 
         //cal anguler speed deg/s
         navAgent.angularSpeed= 360 /(Mathf.PI * 2*  turnRadius / maxSpeed);
         
 
-        //set angine flag
-        engine.isAI=true;
+        //set engine flag
+        // engine.isAI=true;
     }
 
     public float debug_angle,debug_v,debug_h;
@@ -55,6 +56,8 @@ public class AITemplate:MonoBehaviour{
 
     bool resetNavFlag=false;
     public void Update(){
+        
+        if(!isAIControl)return;
 
         //target is null
         if(!curTarget) return;

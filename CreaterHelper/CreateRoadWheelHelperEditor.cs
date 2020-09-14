@@ -99,7 +99,7 @@ public class CreateRoadWheelHelperEditor:Editor{
     public override void OnInspectorGUI ()
 		{
 			bool isPrepared;
-			if (Application.isPlaying || thisTransform.parent == null || thisTransform.parent.gameObject.GetComponent<Rigidbody> () == null) {
+			if (Application.isPlaying || thisTransform.parent == null || thisTransform.root.gameObject.GetComponent<Rigidbody> () == null) {
 				isPrepared = false;
 			} else {
 				isPrepared = true;
@@ -432,7 +432,7 @@ public class CreateRoadWheelHelperEditor:Editor{
 			rigidbody.mass = Sus_MassProp.floatValue;
 			// HingeJoint
 			HingeJoint hingeJoint = armObject.AddComponent < HingeJoint > ();
-			hingeJoint.connectedBody = thisTransform.parent.gameObject.GetComponent< Rigidbody > (); //MainBody's Rigidbody.
+			hingeJoint.connectedBody = thisTransform.root.gameObject.GetComponent< Rigidbody > (); //MainBody's Rigidbody.
 			hingeJoint.anchor = new Vector3 (0.0f, 0.0f, Sus_AnchorProp.floatValue);
 			hingeJoint.axis = new Vector3 (1.0f, 0.0f, 0.0f);
 			hingeJoint.useSpring = true;
